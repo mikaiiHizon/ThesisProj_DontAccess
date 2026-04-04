@@ -1,0 +1,71 @@
+#:kivy !
+MDBoxLayout:
+    orientation: 'vertical'
+    md_bg_color: 0.95, 0.95, 0.95, 1
+
+    MDTopAppBar:
+        title: "San Marcelino, AgriGabay"
+        elevation: 4
+        md_bg_color: 0.1, 0.4, 0.1, 1
+        # The cloud icon calls the weather update
+        right_action_items: [["weather-cloudy", lambda x: app.update_weather()]]
+
+    ScrollView:
+        MDBoxLayout:
+            orientation: 'vertical'
+            adaptive_height: True
+            padding: "16dp"
+            spacing: "15dp"
+
+            # Weather Display Card
+            MDCard:
+                size_hint: 1, None
+                height: "100dp"
+                padding: "15dp"
+                radius: [15, ]
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDLabel:
+                        text: "LOCAL WEATHER"
+                        font_style: "Overline"
+                        theme_text_color: "Hint"
+                    MDLabel:
+                        id: weather_info
+                        text: "Tap cloud icon to sync"
+                        font_style: "H6"
+                        bold: True
+
+            # NPK Inputs Card
+            MDCard:
+                orientation: 'vertical'
+                adaptive_height: True
+                padding: "20dp"
+                spacing: "10dp"
+                radius: [15, ]
+                
+                MDLabel:
+                    text: "Soil Input"
+                    bold: True
+
+                MDTextField:
+                    id: n_input
+                    hint_text: "Nitrogen 👎"
+                    mode: "fill"
+
+                MDTextField:
+                    id: ph_input
+                    hint_text: "pH Level"
+                    mode: "fill"
+
+                MDRaisedButton:
+                    text: "PREDICT CROP"
+                    md_bg_color: 0.1, 0.4, 0.1, 1
+                    size_hint_x: 1
+                    # This must match a function in main.py
+                    on_release: app.run_prediction()
+
+            MDLabel:
+                id: result_label
+                text: "---"
+                halign: "center"
+                font_style: "H5"
