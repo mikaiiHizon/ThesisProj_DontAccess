@@ -1,0 +1,28 @@
+<DayCard>:
+    day: day_dict
+    orientation: 'vertical'
+    size_hint_y: None
+    height: '80dp'
+    MDCard:
+        padding: '10dp'
+        radius: [10,]
+        orientation: 'vertical'
+        MDLabel:
+            text: day_dict['date'] + ' - ' + day_dict['summary']
+            bold: True
+            size_hint_y: None
+            height: '30dp'
+        ScrollView:
+            MDBoxLayout:
+                orientation: 'horizontal'
+                adaptive_height: True
+                spacing: '5dp'
+                padding: '5dp'
+                For hour in day_dict['hours']:
+                    MDChip:
+                        text: hour['time'] + '\\n' + str(hour['temp']) + '°'
+                        icon: app.get_weather_icon(hour['cond'])
+                        size_hint: None, None
+                        size: '60dp', '50dp'
+                        on_release: 
+
