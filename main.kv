@@ -1,128 +1,183 @@
-MDBoxLayout:
-    orientation: 'vertical'
-    md_bg_color: 0.95, 0.95, 0.95, 1
+#:import dp kivy.metrics.dp
 
-    MDTopAppBar:
-        title: "San Marcelino, AgriGabay"
-        elevation: 4
-        md_bg_color: 0.1, 0.4, 0.1, 1
-        right_action_items: [["weather-cloudy", lambda x: app.update_weather()]] 
+ScreenManager:
 
-    ScrollView:
-        size_hint_y: 1
+    HomeScreen:
+    ChatScreen:
+    AddScreen:
+    ListScreen:
+
+
+# ================= HOME =================
+<HomeScreen>:
+    name: "home"
+
+    FloatLayout:
+
         MDBoxLayout:
-            orientation: 'vertical'
-            adaptive_height: True
-            padding: "16dp"
-            spacing: "15dp"
+            orientation: "vertical"
+            size_hint: 1, 1
+            padding: 0, 0, 0, dp(85)
+            md_bg_color: 0.95, 0.95, 0.95, 1
 
-            # Weather Display Card - Enhanced for Forecast
-            MDCard:
-                size_hint: 1, None
-                height: "420dp"
-                padding: "15dp"
-                radius: [15, ]
-                orientation: 'vertical'
-                MDLabel:
-                    text: "3-DAY WEATHER FORECAST"
-                    font_style: "H6"
-                    bold: True
-                    halign: "center"
-                MDLabel:
-                    id: current_weather
-                    text: "Tap cloud to sync"
-                    font_style: "Body1"
-                    halign: "center"
-                    theme_text_color: "Primary"
-                MDExpansionPanelList:
-                    id: weather_panels
-                    orientation: 'vertical'
-                    adaptive_height: True
-                WeatherDay@MDExpansionPanel:
-                    radius: [10,]
-                <WeatherDay>:
-                    title: day_date + " - " + day_summary
-                    content: 
-                        orientation: 'vertical'
-                        padding: "10dp"
-                        spacing: "5dp"
-                        MDLabel:
-                            id: day_date
-                            text: "Today"
-                        MDLabel:
-                            id: day_summary
-                            text: "Sunny 28°C avg"
-                        ScrollView:
-                            size_hint: 1, None
-                            height: "80dp"
-                            MDBoxLayout:
-                                orientation: 'horizontal'
-                                adaptive_height: True
-                                spacing: "5dp"
-                                HourlyChip@MDChip:
-                                <HourlyChip>:
-                                    text: hour_time + "\\n" + str(hour_temp) + "°"
-                                    icon: app.get_weather_icon('Clear')
+            MDTopAppBar:
+                title: "AgriGabay AI"
+                md_bg_color: 0.1, 0.4, 0.1, 1
+                elevation: 3
+                right_action_items: [["weather-cloudy", lambda x: root.update_weather()]]
 
-            # NPK Inputs Card
-            MDCard:
-                orientation: 'vertical'
-                adaptive_height: True
-                padding: "20dp"
-                spacing: "10dp"
-                radius: [15, ]
-                
-                MDLabel:
-                    text: "Soil Input"
-                    bold: True
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: dp(15)
+                spacing: dp(15)
 
-                MDTextField:
-                    id: n_input
-                    hint_text: "Nitrogen 👎"
-                    mode: "fill"
+                # WEATHER CARD
+                MDCard:
+                    radius: [20]
+                    padding: dp(15)
+                    size_hint_y: None
+                    height: dp(120)
+                    md_bg_color: 1, 1, 1, 1
 
-                MDTextField:
-                    id: ph_input
-                    hint_text: "pH Level"
-                    mode: "fill"
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        spacing: dp(15)
 
-                MDRaisedButton:
-                    text: "PREDICT CROP"
-                    md_bg_color: 0.1, 0.4, 0.1, 1
-                    size_hint_x: 1
-                    on_release: app.run_prediction()
+                        MDIcon:
+                            id: weather_icon
+                            icon: "weather-cloudy"
+                            font_size: "40sp"
+                            theme_text_color: "Custom"
+                            text_color: 0.1, 0.4, 0.1, 1
+                            size_hint_x: None
+                            width: dp(50)
 
-            MDLabel:
-                id: result_label
-                text: "---"
-                halign: "center"
-                font_style: "H5"
-    
-    MDBoxLayout:
-        orientation: "horizontal"
-        size_hint_y: None
-        height: "80dp"
-        spacing: "12dp"
-        padding: "12dp"
+                        MDBoxLayout:
+                            orientation: "vertical"
 
-        MDFlatButton:
-            text: "Home"
-            theme_text_color: "Custom"
-            text_color: 0.1, 0.4, 0.1, 1
-            size_hint: 0.4, 1
+                            MDLabel:
+                                text: "PANAHON NGAYON"
+                                theme_text_color: "Hint"
+                                font_style: "Caption"
 
-        MDIconButton:
+                            MDLabel:
+                                id: weather_info
+                                text: "Tap cloud icon to sync"
+                                font_style: "H6"
+                                bold: True
+
+
+        # ================= BOTTOM NAV =================
+        MDBoxLayout:
+            size_hint: 1, None
+            height: dp(70)
+            pos_hint: {"x": 0, "y": 0}
+            md_bg_color: 1, 1, 1, 0.9
+            padding: dp(40), 0
+
+            MDIconButton:
+                icon: "format-list-bulleted"
+                theme_text_color: "Custom"
+                text_color: 0.5, 0.5, 0.5, 1
+                opacity: 0.8
+                on_release: app.change_screen("list")
+
+            Widget:
+
+            MDIconButton:
+                icon: "chat-outline"
+                theme_text_color: "Custom"
+                text_color: 0.5, 0.5, 0.5, 1
+                opacity: 0.8
+                on_release: app.change_screen("chat")
+
+
+        # ================= FLOATING ACTION BUTTON =================
+        MDFloatingActionButton:
             icon: "plus"
+            pos_hint: {"center_x": 0.5, "y": 0.03}
             md_bg_color: 0.1, 0.4, 0.1, 1
-            theme_icon_color: "Custom"
             icon_color: 1, 1, 1, 1
-            size_hint: 0.2, 1
-            elevation_normal: 4
-            radius: [100, ]
+            elevation_normal: 12
+            on_release: app.change_screen("add")
 
-        MDFlatButton:
-            text: "Task"
-            theme_text_color: "Custom"
-            text_color: 0.1, 0.4, 0.1, 1
-            size_hint: 0.4, 1
 
+# ================= CHAT =================
+<ChatScreen>:
+    name: "chat"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0.97, 0.97, 0.97, 1
+
+        MDTopAppBar:
+            title: "Agri AI Chat"
+            md_bg_color: 0.1, 0.4, 0.1, 1
+            left_action_items: [["arrow-left", lambda x: app.change_screen("home")]]
+
+        ScrollView:
+            id: scroll_view
+
+            MDBoxLayout:
+                id: chat_box
+                orientation: "vertical"
+                adaptive_height: True
+                padding: dp(10)
+                spacing: dp(8)
+
+
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            padding: dp(10)
+            spacing: dp(10)
+
+            MDTextField:
+                id: user_input
+                hint_text: "Ask AI about crops..."
+
+            MDRaisedButton:
+                text: "Send"
+                md_bg_color: 0.1, 0.4, 0.1, 1
+                on_release: root.send_message()
+
+
+# ================= ADD =================
+<AddScreen>:
+    name: "add"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Add Crop"
+            md_bg_color: 0.1, 0.4, 0.1, 1
+            left_action_items: [["arrow-left", lambda x: app.change_screen("home")]]
+
+        MDBoxLayout:
+            padding: dp(20)
+
+            MDTextField:
+                hint_text: "Crop Name"
+
+        MDRaisedButton:
+            text: "Save"
+            md_bg_color: 0.1, 0.4, 0.1, 1
+
+
+# ================= LIST =================
+<ListScreen>:
+    name: "list"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Crop List"
+            md_bg_color: 0.1, 0.4, 0.1, 1
+            left_action_items: [["arrow-left", lambda x: app.change_screen("home")]]
+
+        MDLabel:
+            text: "No crops yet"
+            halign: "center"
+            theme_text_color: "Hint"
