@@ -17,26 +17,28 @@ ScreenManager:
         MDBoxLayout:
             orientation: "vertical"
             size_hint: 1, 1
-            padding: 0, 0, 0, dp(85)
             md_bg_color: 0.95, 0.95, 0.95, 1
 
+            # ================= TOP BAR =================
             MDTopAppBar:
                 title: "AgriGabay AI"
                 md_bg_color: 0.1, 0.4, 0.1, 1
                 elevation: 3
                 right_action_items: [["weather-cloudy", lambda x: root.update_weather()]]
 
+            # ================= CONTENT =================
             MDBoxLayout:
                 orientation: "vertical"
-                padding: dp(15)
+                padding: dp(15), dp(10), dp(15), dp(85)  # bottom space for nav
                 spacing: dp(15)
 
-                # WEATHER CARD
+                # ✅ WEATHER CARD (NOW CLEANLY AT TOP)
                 MDCard:
                     radius: [20]
                     padding: dp(15)
                     size_hint_y: None
-                    height: dp(120)
+                    height: dp(130)
+                    elevation: 4
                     md_bg_color: 1, 1, 1, 1
 
                     MDBoxLayout:
@@ -45,15 +47,16 @@ ScreenManager:
 
                         MDIcon:
                             id: weather_icon
-                            icon: "weather-cloudy"
-                            font_size: "40sp"
+                            icon: "weather-partly-cloudy"
+                            font_size: "42sp"
                             theme_text_color: "Custom"
                             text_color: 0.1, 0.4, 0.1, 1
                             size_hint_x: None
-                            width: dp(50)
+                            width: dp(60)
 
                         MDBoxLayout:
                             orientation: "vertical"
+                            spacing: dp(5)
 
                             MDLabel:
                                 text: "PANAHON NGAYON"
@@ -66,38 +69,31 @@ ScreenManager:
                                 font_style: "H6"
                                 bold: True
 
-
         # ================= BOTTOM NAV =================
         MDBoxLayout:
             size_hint: 1, None
             height: dp(70)
             pos_hint: {"x": 0, "y": 0}
-            md_bg_color: 1, 1, 1, 0.9
+            md_bg_color: 1, 1, 1, 0.95
             padding: dp(40), 0
 
             MDIconButton:
                 icon: "format-list-bulleted"
-                theme_text_color: "Custom"
-                text_color: 0.5, 0.5, 0.5, 1
-                opacity: 0.8
                 on_release: app.change_screen("list")
 
             Widget:
 
             MDIconButton:
                 icon: "chat-outline"
-                theme_text_color: "Custom"
-                text_color: 0.5, 0.5, 0.5, 1
-                opacity: 0.8
                 on_release: app.change_screen("chat")
 
-
-        # ================= FLOATING ACTION BUTTON =================
+        # ================= FLOATING BUTTON =================
         MDFloatingActionButton:
             icon: "plus"
-            pos_hint: {"center_x": 0.5, "y": 0.03}
+            pos_hint: {"center_x": 0.5, "y": 0.035}
+            size_hint: None, None
+            size: "70dp", "70dp"
             md_bg_color: 0.1, 0.4, 0.1, 1
-            icon_color: 1, 1, 1, 1
             elevation_normal: 12
             on_release: app.change_screen("add")
 
